@@ -46,7 +46,6 @@ class UpdateActivity : AppCompatActivity() {
         }
     }
 
-    /// 왜 안되는거지
 }
 
 
