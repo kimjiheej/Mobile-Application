@@ -15,7 +15,7 @@ class FoodDBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME,null,1)
     val TAG = "FoodDBHelper"
 
     companion object {
-        const val DB_NAME = "food_db"
+        const val DB_NAME = "food_database"
         const val TABLE_NAME = "food_table"
         const val COL_FOOD = "food"
         const val COL_COUNTRY = "country"
@@ -25,10 +25,19 @@ class FoodDBHelper(context: Context) : SQLiteOpenHelper(context, DB_NAME,null,1)
         val CREATE_TABLE =
             "CREATE TABLE ${TABLE_NAME} (${BaseColumns._ID} INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     "${COL_FOOD} TEXT, ${COL_COUNTRY} TEXT)"
+
+
         Log.d(TAG,CREATE_TABLE)
         db?.execSQL(CREATE_TABLE) // create table 문장을 실행해주는 것이다.
 
-        db?.execSQL("INSERT INTO ${TABLE_NAME} values (null,'제육볶음','대한민국')") // 예문을 넣는 것이다.
+
+        db?.execSQL("INSERT INTO ${TABLE_NAME} values (null,'불고기','한국')") // 예문을 넣는 것이다.
+        db?.execSQL("INSERT INTO ${TABLE_NAME} values (null,'비빔밥','한국')") // 예문을 넣는 것이다.
+        db?.execSQL("INSERT INTO ${TABLE_NAME} values (null,'마라탕','중국')") // 예문을 넣는 것이다.
+        db?.execSQL("INSERT INTO ${TABLE_NAME} values (null,'딤섬','중국')") // 예문을 넣는 것이다.
+        db?.execSQL("INSERT INTO ${TABLE_NAME} values (null,'스시','일본')") // 예문을 넣는 것이다.
+        db?.execSQL("INSERT INTO ${TABLE_NAME} values (null,'오코노미야키','일본')") // 예문을 넣는 것이다.
+
     }
 
     //항상 primarykey 는 밑줄을 치게 되어있음.
