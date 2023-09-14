@@ -45,6 +45,8 @@ class UpdateActivity : AppCompatActivity() {
             startActivity(intent)
         }
     }
+
+    /// 왜 안되는거지
 }
 
 
