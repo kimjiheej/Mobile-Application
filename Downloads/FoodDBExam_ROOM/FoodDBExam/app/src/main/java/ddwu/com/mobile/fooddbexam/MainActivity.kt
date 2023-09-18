@@ -35,6 +35,7 @@ class MainActivity : AppCompatActivity() {
 
 
 //        db = /*FoodDatabase 생성*/
+        // 커밋 테스트
         foodDao = db.foodDao()
 
         foodDao.getAllFoods()
