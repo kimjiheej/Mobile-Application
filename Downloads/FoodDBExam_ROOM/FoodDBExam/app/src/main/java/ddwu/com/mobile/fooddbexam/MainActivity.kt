@@ -3,6 +3,7 @@ package ddwu.com.mobile.fooddbexam
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.room.Room
 import ddwu.com.mobile.fooddbexam.data.Food
 import ddwu.com.mobile.fooddbexam.data.FoodDao
 import ddwu.com.mobile.fooddbexam.data.FoodDatabase
@@ -19,18 +20,24 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var binding : ActivityMainBinding
 
-//    lateinit var db : FoodDatabase
-//    lateinit var foodDao : FoodDao
+    lateinit var db : FoodDatabase
+    lateinit var foodDao : FoodDao
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        db = /*FoodDatabase 생성*/
-//        foodDao = db.foodDao()
+        db = Room.databaseBuilder(
+            applicationContext,FoodDatabase::class.java, "food_db").build()
 
-        showAllFoods()
+
+//        db = /*FoodDatabase 생성*/
+        foodDao = db.foodDao()
+
+        foodDao.getAllFoods()
 
         binding.btnSelect.setOnClickListener{
             showFoodByCountry("한국")
@@ -71,5 +78,8 @@ class MainActivity : AppCompatActivity() {
 
     fun showAllFoods() {
 
+
+
     }
 }
+
