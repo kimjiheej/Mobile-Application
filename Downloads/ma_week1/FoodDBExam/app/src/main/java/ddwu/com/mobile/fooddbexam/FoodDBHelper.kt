@@ -32,7 +32,7 @@ class FoodDBHelper(context : Context) : SQLiteOpenHelper(context, DB_NAME, null,
         Log.d(TAG,CREATE_TABLE)
 
     }
-     // 업그레이드 하기
+     // 데이터베이스 업그레이드
     override fun onUpgrade(db: SQLiteDatabase?, oldVer: Int, newVer: Int) {
         val DROP_TABLE = "DROP TABLE IF EXISTS ${TABLE_NAME}"
         db?.execSQL(DROP_TABLE)
