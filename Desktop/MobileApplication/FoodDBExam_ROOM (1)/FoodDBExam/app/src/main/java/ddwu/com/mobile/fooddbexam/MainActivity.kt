@@ -1,0 +1,90 @@
+package ddwu.com.mobile.fooddbexam
+
+import androidx.appcompat.app.AppCompatActivity
+import android.os.Bundle
+import android.util.Log
+import androidx.room.Room
+import ddwu.com.mobile.fooddbexam.data.Food
+import ddwu.com.mobile.fooddbexam.data.FoodDao
+import ddwu.com.mobile.fooddbexam.data.FoodDatabase
+import ddwu.com.mobile.fooddbexam.databinding.ActivityMainBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.launch
+
+class MainActivity : AppCompatActivity() {
+
+    val TAG = "MainActivity"
+
+    lateinit var binding: ActivityMainBinding
+
+    lateinit var db: FoodDatabase
+    lateinit var foodDao: FoodDao
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+//        db = /*FoodDatabase 생성*/
+
+        db = Room.databaseBuilder(
+            applicationContext, FoodDatabase::class.java, "food_db"
+        ).build()
+
+        foodDao = db.foodDao()
+
+
+
+        binding.btnSelect.setOnClickListener {
+           // showFoodByCountry("한국")
+            showAllFoods()
+        }
+
+        binding.btnAdd.setOnClickListener {
+            addFood(Food(0, "된장찌개", "한국"))
+        }
+
+        binding.btnUpdate.setOnClickListener {
+            modifyFood(Food(1, "김치찌개", "한국"))
+        }
+
+        binding.btnRemove.setOnClickListener {
+            removeFood(Food(2, null, null))
+        }
+
+    }
+
+    /*각 함수 내부에서 적절한 DAO 호출*/
+
+    fun addFood(food: Food) {
+
+        Thread{
+        foodDao.insertFood(food)
+        }.start()
+    }
+
+    fun modifyFood(food: Food) {
+
+    }
+
+    fun removeFood(food: Food) {
+
+    }
+
+    fun showFoodByCountry(country: String) {
+
+    }
+
+    fun showAllFoods() {
+
+        Thread {
+            val foods = foodDao.getAllFoods()
+            for (food in foods) {
+                Log.d(TAG, food.toString())
+            }
+        }.start()
+    }
+}
