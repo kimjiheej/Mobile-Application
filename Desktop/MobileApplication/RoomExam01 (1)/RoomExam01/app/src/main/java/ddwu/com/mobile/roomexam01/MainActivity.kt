@@ -3,8 +3,6 @@ package ddwu.com.mobile.roomexam01
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.View
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.room.Room
 import ddwu.com.mobile.roomexam01.data.Food
 import ddwu.com.mobile.roomexam01.data.FoodDao
@@ -12,6 +10,7 @@ import ddwu.com.mobile.roomexam01.data.FoodDatabase
 import ddwu.com.mobile.roomexam01.databinding.ActivityMainBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 
 
@@ -35,6 +34,7 @@ class MainActivity : AppCompatActivity() {
         ).build()
         foodDao = db.foodDao()
 
+
        CoroutineScope(Dispatchers.IO).launch {
            foodDao.insertFood(Food(0, "된장찌개", "한국"))
            foodDao.insertFood(Food(1, "김치찌개", "한국"))
@@ -42,9 +42,10 @@ class MainActivity : AppCompatActivity() {
            foodDao.insertFood(Food(3, "훠궈", "중국"))
            foodDao.insertFood(Food(4, "스시", "일본"))
            foodDao.insertFood(Food(5, "오코노미야키", "일본"))
+
+           showAllFoods()
        }
 
-        showAllFoods()
 
 
 //        /*RecyclerView 의 layoutManager 지정*/
@@ -75,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         binding.btnInsert.setOnClickListener{
             val foodName = binding.etFood.text.toString()
             val countryName = binding.etNation.text.toString()
-            val newFood = Food(0,foodName,countryName)
+            val newFood = Food(null,foodName,countryName)
             addFood(newFood)
         }
         binding.btnUpdate.setOnClickListener {
@@ -102,17 +103,13 @@ class MainActivity : AppCompatActivity() {
 
     fun modifyFood(foodName : String, countryName : String ) {
         CoroutineScope(Dispatchers.IO).launch {
-
-            val food = foodDao.getFood(foodName)
-            food?.country = countryName
-            foodDao.updateFood(food)
+            foodDao.updateFood(foodName,countryName)
         }
     }
 
     fun removeFood(foodName : String) {
         CoroutineScope(Dispatchers.IO).launch {
-            val food = foodDao.getFood(foodName)
-            foodDao.deleteFood(food)
+            foodDao.deleteFood(foodName)
         }
     }
 
@@ -128,7 +125,7 @@ class MainActivity : AppCompatActivity() {
     fun showAllFoods() {
         CoroutineScope(Dispatchers.IO).launch {
             val flowFoods = foodDao.getAllFoods()
-            flowFoods.collect{foods ->
+            flowFoods.collect { foods ->
                 for (food in foods) {
                     Log.d(TAG, food.toString())
                 }

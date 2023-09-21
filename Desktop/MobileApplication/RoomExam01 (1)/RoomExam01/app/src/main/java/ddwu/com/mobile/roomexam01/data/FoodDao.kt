@@ -20,11 +20,11 @@ interface FoodDao {
     @Insert
     suspend fun insertFood(vararg food : Food)
 
-    @Update
-    suspend fun updateFood(food : Food)
+    @Query("UPDATE food_table SET country = :country WHERE food = :foodName")
+    suspend fun updateFood(foodName : String, country : String)
 
-    @Delete
-    suspend fun deleteFood(food : Food)
+    @Query("DELETE FROM food_table WHERE food =:foodName")
+    suspend fun deleteFood(foodName : String)
 
 
     @Query("SELECT * FROM food_table WHERE food = :foodName")
