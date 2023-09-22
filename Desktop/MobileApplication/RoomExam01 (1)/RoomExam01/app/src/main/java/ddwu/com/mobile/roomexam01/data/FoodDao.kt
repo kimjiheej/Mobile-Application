@@ -26,8 +26,5 @@ interface FoodDao {
     @Query("DELETE FROM food_table WHERE food =:foodName")
     suspend fun deleteFood(foodName : String)
 
-
-    @Query("SELECT * FROM food_table WHERE food = :foodName")
-    suspend fun getFood(foodName: String): Food
 }
 

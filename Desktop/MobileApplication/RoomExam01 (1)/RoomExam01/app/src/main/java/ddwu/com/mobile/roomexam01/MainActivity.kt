@@ -36,12 +36,12 @@ class MainActivity : AppCompatActivity() {
 
 
        CoroutineScope(Dispatchers.IO).launch {
-           foodDao.insertFood(Food(0, "된장찌개", "한국"))
-           foodDao.insertFood(Food(1, "김치찌개", "한국"))
-           foodDao.insertFood(Food(2, "마라탕", "중국"))
-           foodDao.insertFood(Food(3, "훠궈", "중국"))
-           foodDao.insertFood(Food(4, "스시", "일본"))
-           foodDao.insertFood(Food(5, "오코노미야키", "일본"))
+           foodDao.insertFood(Food(null, "된장찌개", "한국"))
+           foodDao.insertFood(Food(null, "김치찌개", "한국"))
+           foodDao.insertFood(Food(null, "마라탕", "중국"))
+           foodDao.insertFood(Food(null, "훠궈", "중국"))
+           foodDao.insertFood(Food(null, "스시", "일본"))
+           foodDao.insertFood(Food(null, "오코노미야키", "일본"))
 
            showAllFoods()
        }
