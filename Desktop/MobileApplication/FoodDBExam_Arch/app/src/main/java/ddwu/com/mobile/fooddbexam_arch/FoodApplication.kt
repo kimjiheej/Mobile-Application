@@ -1,0 +1,18 @@
+package ddwu.com.mobile.fooddbexam_arch
+
+import android.app.Application
+import ddwu.com.mobile.fooddbexam_arch.data.FoodDatabase
+import ddwu.com.mobile.fooddbexam_arch.data.FoodRepository
+
+
+class FoodApplication : Application() {
+    // 앱이 완성된 다음에 생성되는 정보이기 때문이다
+
+    val database by lazy{
+        FoodDatabase.getDatabase(this)
+    }
+
+    val repository by lazy{
+        FoodRepository(database.foodDao())
+    }
+}
