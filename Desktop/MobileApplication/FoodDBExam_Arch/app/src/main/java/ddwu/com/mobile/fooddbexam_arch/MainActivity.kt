@@ -18,7 +18,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var adapter : FoodAdapter
 
     val viewModel : FoodViewModel by viewModels{
-        FoodViewModelFactory((application as FoodApplication).repository)
+        FoodViewModelFactory((application as FoodApplication).repository) // application 에 repository 가 있음
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,9 +31,9 @@ class MainActivity : AppCompatActivity() {
         mainBinding.rvFoods.adapter = adapter
         mainBinding.rvFoods.layoutManager = LinearLayoutManager(this)
 
-        viewModel.allFoods.observe(this,{
-            adapter.foods = it
-            adapter.notifyDataSetChanged()
+        viewModel.allFoods.observe(this,{ // live data 를 관찰
+            adapter.foods = it // 데이터를 바꿔주고
+            adapter.notifyDataSetChanged() // 화면에 있는것 갱신해주기
         })
 
         mainBinding.btnAdd.setOnClickListener {
