@@ -25,20 +25,22 @@ class MainActivity : AppCompatActivity() {
         networkManager = NetworkManager(this)
 
 
-//        val pol = StrictMode.ThreadPolicy.Builder().permitNetwork().build()
-//        StrictMode.setThreadPolicy(pol)
+       val pol = StrictMode.ThreadPolicy.Builder().permitNetwork().build()
+        StrictMode.setThreadPolicy(pol)
 
 
         binding.btnConnInfo.setOnClickListener{
-//            getNetworkInfo()
+            getNetworkInfo()
         }
 
         binding.btnActiveInfo.setOnClickListener {
-//            Log.d(TAG, "Network is connected: ${isOnline()}")
+            Log.d(TAG, "Network is connected: ${isOnline()}")
         }
 
         binding.btnDown.setOnClickListener {
-            val url = "https://httpbin.org/get?user=somsom&dept=computer"
+         //   val url = "https://httpbin.org/get?user=somsom&dept=computer"
+         //   val url = "https://cs.dongduk.ac.kr"
+           val url = resources.getString(R.string.kobis_url) + "20231001"
             binding.tvDisplay.text = networkManager.downloadText(url)
         }
 
@@ -51,35 +53,32 @@ class MainActivity : AppCompatActivity() {
         binding.btnSend.setOnClickListener {
             binding.tvDisplay.text = networkManager.sendPostData("https://httpbin.org/post")
         }
+    }
+    private fun getNetworkInfo() {
+        val connMgr = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        var isWifiConn: Boolean = false
+        var isMobileConn: Boolean = false
 
+        connMgr.allNetworks.forEach { network ->
+            connMgr.getNetworkInfo(network)?.apply {
+                if (type == ConnectivityManager.TYPE_WIFI) {
+                    isWifiConn = isWifiConn or isConnected
+                }
+                if (type == ConnectivityManager.TYPE_MOBILE) {
+                    isMobileConn = isMobileConn or isConnected
+                }
+            }
+        }
+
+        Log.d(TAG, "Wifi connected: $isWifiConn")
+        Log.d(TAG, "Mobile connected: $isMobileConn")
     }
 
 
-//    private fun getNetworkInfo() {
-//        val connMgr = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-//        var isWifiConn: Boolean = false
-//        var isMobileConn: Boolean = false
-//
-//        connMgr.allNetworks.forEach { network ->
-//            connMgr.getNetworkInfo(network)?.apply {
-//                if (type == ConnectivityManager.TYPE_WIFI) {
-//                    isWifiConn = isWifiConn or isConnected
-//                }
-//                if (type == ConnectivityManager.TYPE_MOBILE) {
-//                    isMobileConn = isMobileConn or isConnected
-//                }
-//            }
-//        }
-//
-//        Log.d(TAG, "Wifi connected: $isWifiConn")
-//        Log.d(TAG, "Mobile connected: $isMobileConn")
-//    }
-
-
-//    private fun isOnline(): Boolean {
-//        val connMgr = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-//        val networkInfo: NetworkInfo? = connMgr.activeNetworkInfo
-//        return networkInfo?.isConnected == true
-//    }
+    private fun isOnline(): Boolean {
+        val connMgr = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo: NetworkInfo? = connMgr.activeNetworkInfo
+        return networkInfo?.isConnected == true
+    }
 
 }

@@ -23,13 +23,13 @@ class NetworkManager(val context: Context) {
     fun downloadText(url: String) : String? {
         var receivedContents : String? = null
         var iStream : InputStream? = null
-//        var conn : HttpURLConnection? = null
-        var conn : HttpsURLConnection? = null
+        var conn : HttpURLConnection? = null
+       // var conn : HttpsURLConnection? = null
 
         try {
             val url : URL = URL(url)
-//            conn = url.openConnection() as HttpURLConnection       // 서버 연결 설정 – MalformedURLException
-            conn = url.openConnection() as HttpsURLConnection       // 서버 연결 설정 – MalformedURLException
+            conn = url.openConnection() as HttpURLConnection       // 서버 연결 설정 – MalformedURLException
+          //  conn = url.openConnection() as HttpsURLConnection       // 서버 연결 설정 – MalformedURLException
 
             conn.readTimeout = 5000                                 // 읽기 타임아웃 지정 - SocketTimeoutException
             conn.connectTimeout = 5000                              // 연결 타임아웃 지정 - SocketTimeoutException
@@ -64,6 +64,8 @@ class NetworkManager(val context: Context) {
         var conn : HttpURLConnection? = null
 
         // Image Download 구현
+        // stream 을 bitmap 으로만 변환시켜주면 된다
+        // 밑에 반환해주는 부분이 이미 있음
 
         return receivedContents
     }
@@ -74,7 +76,7 @@ class NetworkManager(val context: Context) {
         var iStream : InputStream? = null
         var conn : HttpsURLConnection? = null
 
-        // POST 요청 구현
+
 
         return receivedContents
     }
