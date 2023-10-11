@@ -24,12 +24,12 @@ class NetworkManager(val context: Context) {
         var receivedContents : String? = null
         var iStream : InputStream? = null
         var conn : HttpURLConnection? = null
-       // var conn : HttpsURLConnection? = null
+      //  var conn : HttpsURLConnection? = null
 
         try {
             val url : URL = URL(url)
             conn = url.openConnection() as HttpURLConnection       // 서버 연결 설정 – MalformedURLException
-          //  conn = url.openConnection() as HttpsURLConnection       // 서버 연결 설정 – MalformedURLException
+         //  conn = url.openConnection() as HttpsURLConnection       // 서버 연결 설정 – MalformedURLException
 
             conn.readTimeout = 5000                                 // 읽기 타임아웃 지정 - SocketTimeoutException
             conn.connectTimeout = 5000                              // 연결 타임아웃 지정 - SocketTimeoutException
@@ -62,11 +62,37 @@ class NetworkManager(val context: Context) {
         var receivedContents : Bitmap? = null
         var iStream : InputStream? = null
         var conn : HttpURLConnection? = null
+      //  var conn : HttpsURLConnection? = null
 
         // Image Download 구현
         // stream 을 bitmap 으로만 변환시켜주면 된다
         // 밑에 반환해주는 부분이 이미 있음
 
+        try{
+            val url : URL = URL(url)
+            conn = url.openConnection() as HttpsURLConnection
+
+            conn.readTimeout = 5000                                 // 읽기 타임아웃 지정 - SocketTimeoutException
+            conn.connectTimeout = 5000                              // 연결 타임아웃 지정 - SocketTimeoutException
+            conn.doInput = true                                     // 서버 응답 지정 – default
+            conn.requestMethod = "GET"                              // 연결 방식 지정 - or POST
+            conn.setRequestProperty("content-type", "application/x-www-form-urlencoded;charset=EUC-KR")
+
+            val responseCode = conn.responseCode
+
+            if (responseCode != HttpsURLConnection.HTTP_OK) {
+                throw IOException("Http Error Code: $responseCode")
+            }
+
+            iStream = conn.inputStream                          // 응답 결과 스트림 확인
+            receivedContents = readStreamToImage(iStream);
+
+        } catch (e: Exception) {        // MalformedURLException, IOExceptionl, SocketTimeoutException 등 처리 필요
+            Log.d(TAG, e.message!!)
+        } finally {
+            if (iStream != null) { try { iStream.close()} catch (e: IOException) { Log.d(TAG, e.message!!) } }
+            if (conn != null) conn.disconnect()
+        }
         return receivedContents
     }
 
@@ -74,10 +100,50 @@ class NetworkManager(val context: Context) {
     fun sendPostData(url: String) : String? {
         var receivedContents : String? = null
         var iStream : InputStream? = null
-        var conn : HttpsURLConnection? = null
+        var conn : HttpURLConnection? = null
+        // var conn : HttpsURLConnection? = null
 
+        try {
+            val url : URL = URL(url)
+            conn = url.openConnection() as HttpURLConnection       // 서버 연결 설정 – MalformedURLException
+            // conn = url.openConnection() as HttpsURLConnection       // 서버 연결 설정 – MalformedURLException
 
+            conn.readTimeout = 5000                                 // 읽기 타임아웃 지정 - SocketTimeoutException
+            conn.connectTimeout = 5000                              // 연결 타임아웃 지정 - SocketTimeoutException
+            conn.doInput = true                                     // 서버 응답 지정 – default
+            // 연결 방식 지정 - or POST
 
+            conn.doOutput = true
+            conn.requestMethod = "POST"
+            conn.setRequestProperty("content-type", "application/x-www-form-urlencoded;charset=UTF-8")
+
+            val params1 = "user=somsom"
+            val params2 = "&dept=computer"
+            val outStreamWriter : OutputStreamWriter = OutputStreamWriter(conn.outputStream,"UTF-8")
+            val writer : BufferedWriter = BufferedWriter(outStreamWriter)
+
+            writer.write(params1)
+            writer.write(params2)
+            writer.flush()
+
+            // 전송 형식 지정  json 일 경우 application/json 으로 변경
+
+//            conn.connect()                                          // 통신 링크 열기 – 트래픽 발생
+            val responseCode = conn.responseCode                    // 서버 전송 및 응답 결과 수신
+
+            if (responseCode != HttpsURLConnection.HTTP_OK) {
+                throw IOException("Http Error Code: $responseCode")
+            }
+
+            iStream = conn.inputStream                          // 응답 결과 스트림 확인
+            receivedContents = readStreamToString (iStream)         // stream 처리 함수를 구현한 후 사용
+
+        } catch (e: Exception) {        // MalformedURLException, IOExceptionl, SocketTimeoutException 등 처리 필요
+            Log.d(TAG, e.message!!)
+        } finally {
+            if (iStream != null) { try { iStream.close()} catch (e: IOException) { Log.d(TAG, e.message!!) } }
+            if (conn != null) conn.disconnect()
+        }
         return receivedContents
     }
 

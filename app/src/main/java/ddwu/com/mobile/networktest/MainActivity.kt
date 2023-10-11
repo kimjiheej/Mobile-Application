@@ -4,6 +4,7 @@ package ddwu.com.mobile.networktest
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkInfo
+import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.StrictMode
@@ -25,6 +26,7 @@ class MainActivity : AppCompatActivity() {
         networkManager = NetworkManager(this)
 
 
+        // 임시로 코루틴 쓰지 않고 수행할 수 있도록 한다
        val pol = StrictMode.ThreadPolicy.Builder().permitNetwork().build()
         StrictMode.setThreadPolicy(pol)
 
@@ -40,12 +42,36 @@ class MainActivity : AppCompatActivity() {
         binding.btnDown.setOnClickListener {
          //   val url = "https://httpbin.org/get?user=somsom&dept=computer"
          //   val url = "https://cs.dongduk.ac.kr"
-           val url = resources.getString(R.string.kobis_url) + "20231001"
+
+
+//            // URL을 빌드하기 위한 Uri.Builder를 생성합니다.
+//            val uriBuilder = Uri.parse(resources.getString(R.string.kobis_url)).buildUpon()
+//
+//             매개변수를 HashMap으로 추가합니다.
+//            val queryParams = HashMap<String, String>()
+//            queryParams["itemPerPage"] = "10" // 원하는 값으로 변경
+//            queryParams["multiMovieYn"] = "N"   // 원하는 값으로 변경
+//            queryParams["targetDt"] = date
+//
+//            // HashMap에 있는 매개변수를 Uri.Builder에 추가합니다.
+//            for ((key, value) in queryParams) {
+//                uriBuilder.appendQueryParameter(key, value)
+//            }
+//
+//            // 최종 URL을 생성합니다.
+   //         <string name="kobis_url">http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.xml?key=f5eef3421c602c6cb7ea224104795888&amp;targetDt=&amp;itemPerPage=10&amp;multiMovieYn=N</string>
+//            val finalUrl = uriBuilder.build().toString()
+
+
+            val date = binding.etDate.text.toString()
+            val url = resources.getString(R.string.kobis_url) + date
             binding.tvDisplay.text = networkManager.downloadText(url)
+
+
         }
 
         binding.btnImg.setOnClickListener {
-            val imageUrl = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2tuoLt3wVnUbbmP40JbeBLcqHJ1dWO8Tfgw&usqp=CAU"
+            val imageUrl = resources.getString(R.string.image_url)
             val result = networkManager.downloadImage(imageUrl)
             binding.ivDisplay.setImageBitmap(result)
         }
@@ -58,7 +84,6 @@ class MainActivity : AppCompatActivity() {
         val connMgr = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         var isWifiConn: Boolean = false
         var isMobileConn: Boolean = false
-
         connMgr.allNetworks.forEach { network ->
             connMgr.getNetworkInfo(network)?.apply {
                 if (type == ConnectivityManager.TYPE_WIFI) {
