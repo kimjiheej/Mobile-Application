@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">OpenAPITest</string>
+    <string name="kobis_url">http://kobis.or.kr/kobisopenapi/webservice/rest/boxoffice/searchDailyBoxOfficeList.xml?key=7c555d052743d419d76231191a3cbba0&amp;targetDt=</string>
+</resources>
