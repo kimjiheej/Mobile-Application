@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import ddwu.com.mobile.jsonnetworktest.data.BoxOfficeRoot
 import ddwu.com.mobile.jsonnetworktest.databinding.ActivityMainBinding
 import ddwu.com.mobile.jsonnetworktest.network.IBoxOfficeAPIService
@@ -72,10 +73,10 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-//        val url = resources.getString(R.string.image_url)
-//        Glide.with(this)
-//            .load(url)
-//            .into(mainBinding.imageView)
+        val url = resources.getString(R.string.image_url)
+        Glide.with(this)
+            .load(url)
+            .into(mainBinding.imageView)
 
 
     }
