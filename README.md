@@ -3,7 +3,7 @@
 
 📗 1주차 - 코틀린 복습. 
  <br> 
- 📗 2주차 - SQLiteDatabase 복습. SQLiteOpenHelper. SQLiteDatabase/Cursor 클래스 
+ 📗 2주차 - SQLiteDatabase 복습. SQLiteOpenHelper. SQLiteDatabase/Cursor 클래스 <br>
 📘 3주차 -  Room Database. DAO 정의. Room Database 정의. 비동기 쿼리 사용  <br>
  📘 4주차 - View Model. Android 계층. 아키텍처 구조 <br>
  📙 5주차 - Android Network, HTTP 통신, GET, POST. ConnectivityManager. HTTP 요청. HTTP 데이터 서버 전송 <br>
